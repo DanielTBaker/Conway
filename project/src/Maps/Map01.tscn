@@ -934,6 +934,7 @@ script = ExtResource( 2 )
 visible = false
 position = Vector2( 288, 208 )
 current = true
+zoom = Vector2( 0.5, 0.5 )
 
 [node name="Players" type="Node" parent="."]
 
