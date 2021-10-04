@@ -26,22 +26,22 @@ func _physics_process(delta):
 	velocity = move_and_slide(velocity)
 	
 	if Input.is_action_just_pressed("ui_bomb"):
-#		var bomb = load("res://src/Maps/Bomb.tscn")
-#		var instance = bomb.instance()
-#		get_node("..").add_child(instance)
-#		instance.set_global_position((self.get_global_position()/TILE_SIZE).floor()*TILE_SIZE + Vector2(TILE_SIZE/2,TILE_SIZE/2))
-		var wave = load("res://src/Maps/Wave.tscn").instance()
-		wave.init(last_dir,self)
-		wave.set_global_position(self.get_global_position()+last_dir*10)
-		if last_dir.x == 1:
-			wave.set_rotation_degrees(0)
-		elif last_dir.x == -1:
-			wave.set_rotation_degrees(180)
-		elif last_dir.y == 1:
-			wave.set_rotation_degrees(90)
-		elif last_dir.y == -1:
-			wave.set_rotation_degrees(-90)
-		get_node("../../Projectiles").add_child(wave)
+		var bomb = load("res://src/Maps/Bomb.tscn")
+		var instance = bomb.instance()
+		get_node("..").add_child(instance)
+		instance.set_global_position((self.get_global_position()/TILE_SIZE).floor()*TILE_SIZE + Vector2(TILE_SIZE/2,TILE_SIZE/2))
+#		var wave = load("res://src/Maps/Wave.tscn").instance()
+#		wave.init(last_dir,self)
+#		wave.set_global_position(self.get_global_position()+last_dir*10)
+#		if last_dir.x == 1:
+#			wave.set_rotation_degrees(0)
+#		elif last_dir.x == -1:
+#			wave.set_rotation_degrees(180)
+#		elif last_dir.y == 1:
+#			wave.set_rotation_degrees(90)
+#		elif last_dir.y == -1:
+#			wave.set_rotation_degrees(-90)
+#		get_node("../../Projectiles").add_child(wave)
 		
 func hit(pos : Vector2):
 	pass

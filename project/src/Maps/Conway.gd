@@ -54,7 +54,7 @@ func _on_Timer_timeout():
 	timer.start(DELAY)
 
 func hit(pos : Vector2):
-	var tile = (pos/TILE_SIZE).floor()
+	var tile = world_to_map(pos)
 	if get_cellv(tile)==1:
 		set_cellv(tile,0)
 		temp_field[tile.x][tile.y]=0
