@@ -25,6 +25,10 @@ window/size/width=1240
 window/size/height=960
 window/size/resizable=false
 
+[gdnative]
+
+singletons=[  ]
+
 [input]
 
 ui_bomb={
@@ -32,6 +36,10 @@ ui_bomb={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":32,"unicode":0,"echo":false,"script":null)
  ]
 }
+
+[physics]
+
+2d/default_gravity=0
 
 [rendering]
 
