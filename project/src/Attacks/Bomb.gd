@@ -1,6 +1,6 @@
 extends Node2D
 
-const wave = preload("res://src/Maps/Wave.tscn")
+const wave = preload("res://src/Attacks/Wave.tscn")
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"

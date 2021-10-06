@@ -33,19 +33,19 @@ func _physics_process(delta):
 	velocity = move_and_slide(velocity)
 	
 	##Drop Bomb if timer expired
-	if Input.is_action_just_pressed("ui_bomb"):
+	if Input.is_action_pressed("ui_bomb"):
 		if $BombTimer.is_stopped():
-			var bomb = load("res://src/Maps/Bomb.tscn")
+			var bomb = load("res://src/Attacks/Bomb.tscn")
 			var instance = bomb.instance()
 			get_node("..").add_child(instance)
 			##Place Bomb on grid
 			instance.set_global_position((self.get_global_position()/TILE_SIZE).floor()*TILE_SIZE + Vector2(TILE_SIZE/2,TILE_SIZE/2))
-			$ShotTimer.start(bomb_delay)
+			$BombTimer.start(bomb_delay)
 	
 	##Shoot if timer expired	
 	if Input.is_action_pressed("ui_shot"):
 		if $ShotTimer.is_stopped():
-			var wave : RigidBody2D = load("res://src/Maps/Wave.tscn").instance()
+			var wave : RigidBody2D = load("res://src/Attacks/Wave.tscn").instance()
 			wave.init(last_dir,self)
 			wave.set_global_position(self.get_global_position())
 			## Set Shot Direction
