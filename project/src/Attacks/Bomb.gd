@@ -4,7 +4,7 @@ const wave = preload("res://src/Attacks/Wave.tscn")
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-onready var projectiles = get_node("../../Projectiles")
+onready var projectiles = get_parent()
 export(float) var wave_speed = 150
 # Called when the node enters the scene tree for the first time.
 func _ready():

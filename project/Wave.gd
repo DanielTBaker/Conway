@@ -31,3 +31,6 @@ func _on_Area2D_body_shape_entered(body_id, body, body_shape, area_shape):
 	if body.name == "Player":
 		body.hit()
 		self.queue_free()
+	if body.get_parent().name == "Enemies":
+		body.hit(dir)
+		self.queue_free()

@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-onready var TILE_SIZE = get_node("../../TileMap").TILE_SIZE
+onready var TILE_SIZE = get_node("../Nav/TileMap").TILE_SIZE
 
 const MAX_HEALTH = 3
 
@@ -10,7 +10,7 @@ export(float) var shot_velocity = 150
 export(float) var WALK_SPEED = 50
 onready var animationTree = $AnimationTree
 onready var animationState = animationTree.get('parameters/playback')
-onready var menu = get_node("../../Menu")
+onready var menu = get_node("../Menu")
 
 var health
 
@@ -65,7 +65,7 @@ func _physics_process(delta):
 			if $BombTimer.is_stopped():
 				var bomb = load("res://src/Attacks/Bomb.tscn")
 				var instance = bomb.instance()
-				get_node("..").add_child(instance)
+				get_node("../Projectiles").add_child(instance)
 				##Place Bomb on grid
 				instance.set_global_position((self.get_global_position()/TILE_SIZE).floor()*TILE_SIZE + Vector2(TILE_SIZE/2,TILE_SIZE/2))
 				$BombTimer.start(bomb_delay)
@@ -86,7 +86,7 @@ func _physics_process(delta):
 				elif last_dir.y == -1:
 					wave.set_rotation_degrees(-90)
 				wave.apply_impulse(Vector2(),last_dir*shot_velocity)
-				get_node("../../Projectiles").add_child(wave)
+				get_node("../Projectiles").add_child(wave)
 				$ShotTimer.start(shot_delay)
 		
 func hit():

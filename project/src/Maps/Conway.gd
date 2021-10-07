@@ -1,5 +1,6 @@
 extends TileMap
 
+signal map_update
 ## Size of play area
 const HEIGHT = 26
 const WIDTH = 26
@@ -17,7 +18,8 @@ const BORDER_SIZE = 3
 ## Delay between conway steps
 export(int) var DELAY = 1
 onready var timer = $Timer
-onready var players = get_node("../Players")
+onready var enemies = get_node("../../Enemies")
+onready var player = get_node("../../Player")
 
 var temp_field
 
@@ -51,12 +53,14 @@ func _on_Timer_timeout():
 				else:
 					temp_field[x][y]=1
 			##Apply Conway Rules (Dead cells)
+			var bodies = enemies.get_children()
+			bodies.append(player)
 			if get_cell(x+BORDER_SIZE,y+BORDER_SIZE) == 0:
 				if live_neighbours in BIRTHS:
 					temp_field[x][y]=1
 					##Cells with a player cannot spawn
-					for player in players.get_children():
-						if (player.get_global_position() - Vector2(TILE_SIZE*(x+BORDER_SIZE)+TILE_SIZE/2,TILE_SIZE*(y+BORDER_SIZE)+TILE_SIZE/2)).length()<TILE_SIZE:
+					for body in bodies:
+						if (body.get_global_position() - Vector2(TILE_SIZE*(x+BORDER_SIZE)+TILE_SIZE/2,TILE_SIZE*(y+BORDER_SIZE)+TILE_SIZE/2)).length()<TILE_SIZE:
 							temp_field[x][y]=0
 							break	
 				else:
@@ -70,6 +74,8 @@ func _on_Timer_timeout():
 	update_bitmask_region (Vector2( BORDER_SIZE, BORDER_SIZE ), Vector2(WIDTH+BORDER_SIZE,HEIGHT+BORDER_SIZE))
 	##Restart Timer
 	timer.start(DELAY)
+	emit_signal("map_update")
+
 
 ## Run when collision is detected with a projectile
 func hit(pos1 : Vector2, pos2 : Vector2):
@@ -82,3 +88,4 @@ func hit(pos1 : Vector2, pos2 : Vector2):
 		temp_field[pos2.x-BORDER_SIZE][pos2.y-BORDER_SIZE]=0
 	##AutoTiles
 	update_bitmask_region (pos1 - Vector2(4,4), pos1 + Vector2(4,4))
+	emit_signal("map_update")
