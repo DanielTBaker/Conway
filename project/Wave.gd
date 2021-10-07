@@ -28,3 +28,6 @@ func _on_Area2D_body_shape_entered(body_id, body, body_shape, area_shape):
 		var pos2 = body.world_to_map(global_position + 8*dir + 8*perp)
 		body.hit(pos1,pos2)
 		self.queue_free()
+	if body.name == "Player":
+		body.hit()
+		self.queue_free()

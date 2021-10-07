@@ -1,8 +1,10 @@
-[gd_scene load_steps=99 format=2]
+[gd_scene load_steps=101 format=2]
 
 [ext_resource path="res://GFX/ForestTiles.png" type="Texture" id=1]
 [ext_resource path="res://src/Maps/Conway.gd" type="Script" id=2]
 [ext_resource path="res://src/Player/Player.tscn" type="PackedScene" id=3]
+[ext_resource path="res://src/Maps/Menu.gd" type="Script" id=4]
+[ext_resource path="res://src/Maps/World.gd" type="Script" id=5]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
@@ -914,7 +916,8 @@ points = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
 } ]
 2/z_index = 0
 
-[node name="Node2D" type="Node2D"]
+[node name="World" type="Node2D"]
+script = ExtResource( 5 )
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource( 95 )
@@ -939,6 +942,31 @@ zoom = Vector2( 0.5, 0.5 )
 
 [node name="Player" parent="Players" instance=ExtResource( 3 )]
 position = Vector2( 256.731, 256.063 )
+shot_delay = 0.25
 
 [node name="Projectiles" type="Node" parent="."]
+
+[node name="Menu" type="ColorRect" parent="."]
+margin_left = 496.0
+margin_top = 16.0
+margin_right = 620.0
+margin_bottom = 496.0
+color = Color( 0, 0, 0, 1 )
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Menu"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HealthBar" type="HBoxContainer" parent="Menu/VBoxContainer"]
+margin_top = 240.0
+margin_right = 124.0
+margin_bottom = 240.0
 [connection signal="timeout" from="TileMap/Timer" to="TileMap" method="_on_Timer_timeout"]
