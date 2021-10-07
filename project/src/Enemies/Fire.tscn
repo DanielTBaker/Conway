@@ -29,7 +29,6 @@ script = ExtResource( 1 )
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )
 hframes = 4
-frame = 3
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite"]
 autoplay = "Burn"
