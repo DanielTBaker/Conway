@@ -56,7 +56,7 @@ func _physics_process(delta):
 			animationState.travel("Walk")
 		else:
 			velocity = Vector2.ZERO
-#			animationState.travel("Idle")
+			animationState.travel("Idle")
 		## Move and Slide
 		velocity = move_and_slide(velocity)
 		
