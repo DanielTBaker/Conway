@@ -25,7 +25,7 @@ func _ready():
 		
 
 var velocity = Vector2()
-var last_dir = Vector2.UP
+var last_dir = Vector2.DOWN
 
 func _physics_process(delta):
 	if not animationState.get_current_node()=="Damaged":

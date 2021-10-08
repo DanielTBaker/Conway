@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://Fire.gd" type="Script" id=1]
+[ext_resource path="res://src/Enemies/Fire.gd" type="Script" id=1]
 [ext_resource path="res://GFX/Fire.png" type="Texture" id=2]
 
 [sub_resource type="Animation" id=1]
