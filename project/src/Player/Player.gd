@@ -1,6 +1,7 @@
 extends KinematicBody2D
+class_name  Player
 
-onready var TILE_SIZE = get_node("../Nav/TileMap").TILE_SIZE
+var TILE_SIZE : int
 
 const MAX_HEALTH = 3
 
@@ -13,6 +14,8 @@ onready var animationState = animationTree.get('parameters/playback')
 onready var menu = get_node("../Menu")
 
 var health
+var velocity = Vector2()
+var last_dir = Vector2.DOWN
 
 func _ready():
 	health = MAX_HEALTH
@@ -24,8 +27,7 @@ func _ready():
 		
 		
 
-var velocity = Vector2()
-var last_dir = Vector2.DOWN
+
 
 func _physics_process(delta):
 	if not animationState.get_current_node()=="Damaged":

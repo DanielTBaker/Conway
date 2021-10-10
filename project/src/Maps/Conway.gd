@@ -1,5 +1,7 @@
 extends TileMap
 
+class_name Level
+
 signal map_update
 ## Size of play area
 const HEIGHT = 26
@@ -18,19 +20,20 @@ const BORDER_SIZE = 3
 ## Delay between conway steps
 export(float) var DELAY = 1
 onready var timer = $Timer
-onready var enemies = get_node("../../Enemies")
-onready var player = get_node("../../Player")
+
 
 export(Array) var live_ids = [1,2]
 export(int) var var_live_id =1
 export(int) var var_dead_id = 0
 export(Array) var water_tiles = [3]
 
+var enemies
+var player : Player
 
 var temp_field
 var burning_cells = []
 
-func _ready():
+func load_level():
 	##Initialize Conway array from tilemap
 	temp_field = []
 	for x in range(WIDTH):
@@ -38,8 +41,23 @@ func _ready():
 		for y in range(HEIGHT):
 			temp.append(get_cell(x+BORDER_SIZE,y+BORDER_SIZE))
 		temp_field.append(temp)
+	
+	enemies = get_node("../../Enemies")
+	player = get_node("../../Player")
+	player.global_position = $PlayerSpawn.global_position
+	player.velocity = Vector2.ZERO
+	player.last_dir = Vector2.DOWN
+	player.TILE_SIZE=TILE_SIZE
+	$PlayerSpawn.queue_free()
+	for spawn in $EnemyPositions.get_children():
+		print(spawn.name,"-",spawn.enemy_type)
+		var enemy = load(spawn.enemy_type).instance()
+		enemy.global_position = spawn.global_position
+		enemy.nav = get_parent()
+		enemies.add_child(enemy)
+		spawn.queue_free()
+	$EnemyPositions.queue_free()
 	timer.start(DELAY)
-
 
 ## Iterate Conway
 func _on_Timer_timeout():

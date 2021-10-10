@@ -2,7 +2,7 @@ extends ColorRect
 
 onready var player = get_node("../Player")
 onready var enemies = get_node("../Enemies")
-onready var tilemap = get_node("../Nav/TileMap")
+onready var tilemap
 
 var _random_move = false
 
@@ -73,3 +73,15 @@ func _on_death_pressed():
 		var button : CheckBox = get_node("VBoxContainer/HBoxContainer3/D/"+str(i))
 		if button.pressed:
 			tilemap.DEATHS.append(i)
+
+func _on_Reload_pressed():
+	get_parent().unload_level()
+	get_parent().load_level("res://src/Maps/Level01.tscn")
+	if _random_move:
+		_on_RandomMove_button_down()
+	else:
+		_on_DirectMove_button_down()
+	_on_birth_pressed()
+	_on_death_pressed()
+	_on_ConwayTime_value_changed($VBoxContainer/ConwayTime.value)
+	_on_EnemySpeed_value_changed($VBoxContainer/EnemySpeed.value)

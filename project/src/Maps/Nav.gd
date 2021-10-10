@@ -5,6 +5,8 @@ onready var enemies = get_node("../Enemies")
 onready var player = get_node("../Player")
 onready var timer = $NavTimer
 
+var tilemap
+
 export(float) var update_timer = .1
 
 

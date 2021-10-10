@@ -53,8 +53,8 @@ func _physics_process(delta):
 		if knockback == Vector2.ZERO and _state != States.BURNING:
 			_state = States.MOVING
 	elif _state == States.MOVING:
-		if _random_move:
-			var tileMap : TileMap = nav.get_node("TileMap")
+		if _random_move or path.size()<=1:
+			var tileMap : TileMap = nav.tilemap
 			var tileV = tileMap.world_to_map(global_position)
 			if velocity == Vector2.ZERO:
 				if tileMap.get_cellv(tileV+Vector2.UP) == tileMap.var_dead_id:
@@ -101,15 +101,13 @@ func _physics_process(delta):
 							velocity = -turn
 					velocity *= speed
 		else:
-			if path.size()>1:
-				var d = global_position.distance_to(path[0])
-				if d>2:
-					velocity = speed*(path[0]-global_position)/d	
-				else:
-					velocity = Vector2.ZERO
-					path.remove(0)
+			var d = global_position.distance_to(path[0])
+			if d>2:
+				velocity = speed*(path[0]-global_position)/d	
 			else:
 				velocity = Vector2.ZERO
+				path.remove(0)
+
 		velocity = move_and_slide(velocity)
 		if get_slide_count() > 0:
 			var hit_player = false

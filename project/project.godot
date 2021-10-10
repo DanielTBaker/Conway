@@ -8,21 +8,35 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "TileMap",
+"class": "Level",
+"language": "GDScript",
+"path": "res://src/Maps/Conway.gd"
+}, {
+"base": "KinematicBody2D",
+"class": "Player",
+"language": "GDScript",
+"path": "res://src/Player/Player.gd"
+} ]
 _global_script_class_icons={
-
+"Level": "",
+"Player": ""
 }
 
 [application]
 
 config/name="Project"
-run/main_scene="res://src/Maps/Map01.tscn"
+run/main_scene="res://src/World/World.tscn"
 config/icon="res://icon.png"
 
 [display]
 
 window/size/width=1240
 window/size/height=960
+window/size/resizable=false
+window/stretch/mode="2d"
+window/stretch/aspect="keep"
 
 [gdnative]
 
