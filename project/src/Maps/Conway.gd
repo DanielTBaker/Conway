@@ -6,8 +6,8 @@ const HEIGHT = 26
 const WIDTH = 26
 
 ##Conway Rules
-const DEATHS = [0,1,4,5,6,7,8]
-const BIRTHS = [3]
+var DEATHS = [0,1,4,5,6,7,8]
+var BIRTHS = [3]
 
 ##Size of tiles
 const TILE_SIZE = 16
@@ -21,7 +21,7 @@ onready var timer = $Timer
 onready var enemies = get_node("../../Enemies")
 onready var player = get_node("../../Player")
 
-export(Array) var live_ids = [1]
+export(Array) var live_ids = [1,2]
 export(int) var var_live_id =1
 export(int) var var_dead_id = 0
 export(Array) var water_tiles = [3]

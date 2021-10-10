@@ -13,9 +13,12 @@ var spawn : Vector2
 enum States {MOVING, KNOCKBACK, BURNING}
 
 var _state : int = States.MOVING
+var _random_move = false
+var rng = RandomNumberGenerator.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	rng.randomize()
 	spawn =  global_position
 	pass # Replace with function body.
 
@@ -50,15 +53,63 @@ func _physics_process(delta):
 		if knockback == Vector2.ZERO and _state != States.BURNING:
 			_state = States.MOVING
 	elif _state == States.MOVING:
-		if path.size()>1:
-			var d = global_position.distance_to(path[0])
-			if d>2:
-				velocity = speed*(path[0]-global_position)/d	
+		if _random_move:
+			var tileMap : TileMap = nav.get_node("TileMap")
+			var tileV = tileMap.world_to_map(global_position)
+			if velocity == Vector2.ZERO:
+				if tileMap.get_cellv(tileV+Vector2.UP) == tileMap.var_dead_id:
+					velocity = Vector2.UP
+				elif tileMap.get_cellv(tileV+Vector2.RIGHT)  == tileMap.var_dead_id:
+					velocity = Vector2.RIGHT
+				elif tileMap.get_cellv(tileV+Vector2.DOWN)  == tileMap.var_dead_id:
+					velocity = Vector2.DOWN
+				elif tileMap.get_cellv(tileV+Vector2.LEFT)  == tileMap.var_dead_id:
+					velocity = Vector2.LEFT
+				else:
+					velocity=Vector2.ZERO
+				velocity *= speed
+			else:
+				var probs = [0,0,0,0]
+				var facing: Vector2
+				if abs(velocity.x)>=abs(velocity.y):
+					facing= Vector2.RIGHT*sign(velocity.x)
+				else:
+					facing= Vector2.DOWN*sign(velocity.y)
+				
+				if fmod(floor((facing*global_position).length()),16)==8:
+					var turn = Vector2(1-abs(facing.x),1-abs(facing.y))
+					if tileMap.get_cellv(tileV+facing)  == tileMap.var_dead_id:
+						probs[0] = 40
+					if tileMap.get_cellv(tileV+turn)  == tileMap.var_dead_id:
+						probs[1] = 25
+					if tileMap.get_cellv(tileV-facing)  == tileMap.var_dead_id:
+						probs[2] = 25
+					if tileMap.get_cellv(tileV-turn)  == tileMap.var_dead_id:
+						probs[3] = 10
+					var probs_cumsum = [probs[0],probs[0]+probs[1],probs[0]+probs[1]+probs[2],probs[0]+probs[1]+probs[2]+probs[3]]
+					if probs_cumsum[3]==0:
+						velocity = Vector2.ZERO
+					else:
+						var rand = rng.randi_range(0,probs[0]+probs[1]+probs[2]+probs[3]-1)
+						if rand < probs_cumsum[0]:
+							velocity = facing
+						elif rand < probs_cumsum[1]:
+							velocity = turn
+						elif rand < probs_cumsum[2]:
+							velocity = - facing
+						else:
+							velocity = -turn
+					velocity *= speed
+		else:
+			if path.size()>1:
+				var d = global_position.distance_to(path[0])
+				if d>2:
+					velocity = speed*(path[0]-global_position)/d	
+				else:
+					velocity = Vector2.ZERO
+					path.remove(0)
 			else:
 				velocity = Vector2.ZERO
-				path.remove(0)
-		else:
-			velocity = Vector2.ZERO
 		velocity = move_and_slide(velocity)
 		if get_slide_count() > 0:
 			var hit_player = false
