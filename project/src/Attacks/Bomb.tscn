@@ -3,10 +3,10 @@
 [ext_resource path="res://GFX/bomb.png" type="Texture" id=1]
 [ext_resource path="res://src/Attacks/Bomb.gd" type="Script" id=2]
 
-
 [sub_resource type="Animation" id=1]
 resource_name = "Charge"
 length = 1.1
+loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:frame")
 tracks/0/interp = 1
@@ -26,9 +26,8 @@ script = ExtResource( 2 )
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
 hframes = 10
-frame = 3
+frame = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite"]
 autoplay = "Charge"
 anims/Charge = SubResource( 1 )
-[connection signal="animation_finished" from="Sprite/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

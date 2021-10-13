@@ -1,6 +1,7 @@
 extends KinematicBody2D
 class_name  Player
 
+signal detonate
 var TILE_SIZE : int
 
 const MAX_HEALTH = 3
@@ -16,6 +17,7 @@ onready var menu = get_node("../Menu")
 var health
 var velocity = Vector2()
 var last_dir = Vector2.DOWN
+var bomb_avail = true
 
 func _ready():
 	health = MAX_HEALTH
@@ -63,14 +65,20 @@ func _physics_process(delta):
 		velocity = move_and_slide(velocity)
 		
 		##Drop Bomb if timer expired
-		if Input.is_action_pressed("ui_bomb"):
-			if $BombTimer.is_stopped():
+		if Input.is_action_just_pressed("ui_bomb"):
+			if bomb_avail:
 				var bomb = load("res://src/Attacks/Bomb.tscn")
 				var instance = bomb.instance()
-				get_node("../Projectiles").add_child(instance)
+				get_node("../Bombs").add_child(instance)
 				##Place Bomb on grid
 				instance.set_global_position((self.get_global_position()/TILE_SIZE).floor()*TILE_SIZE + Vector2(TILE_SIZE/2,TILE_SIZE/2))
-				$BombTimer.start(bomb_delay)
+				instance.connect("explode", self, "_on_bomb_det")
+				self.connect("detonate",instance,"_on_detonate")
+				bomb_avail = false
+			else:
+				print('detonate')
+				emit_signal("detonate")
+				
 		
 		##Shoot if timer expired	
 		if Input.is_action_pressed("ui_shot"):
@@ -91,6 +99,10 @@ func _physics_process(delta):
 				get_node("../Projectiles").add_child(wave)
 				$ShotTimer.start(shot_delay)
 		
+		
+func _on_bomb_det():
+	bomb_avail = true
+	
 func hit():
 	health -=1
 	if health ==0:

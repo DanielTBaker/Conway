@@ -1,23 +1,15 @@
 extends Node2D
 
+signal explode
 const wave = preload("res://src/Attacks/Wave.tscn")
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-onready var projectiles = get_parent()
+onready var projectiles = get_parent().get_node('../Projectiles')
 export(float) var wave_speed = 150
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
-
-
-func _on_AnimationPlayer_animation_finished(anim_name):
-	##Spawn 4 directional waves
+func _on_detonate():
+	print('signal recieved')
 	var up : RigidBody2D = wave.instance()
 	var down : RigidBody2D = wave.instance()
 	var left : RigidBody2D = wave.instance()
@@ -50,5 +42,6 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 	projectiles.add_child(left)
 	projectiles.add_child(right)
 	
+	emit_signal("explode")
 	##Deleta bomb
 	self.queue_free()

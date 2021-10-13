@@ -30,6 +30,8 @@ shot_delay = 0.1
 
 [node name="Projectiles" type="Node" parent="."]
 
+[node name="Bombs" type="Node" parent="."]
+
 [node name="Menu" type="ColorRect" parent="."]
 margin_left = 496.0
 margin_top = 16.0
